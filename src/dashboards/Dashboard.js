@@ -1,32 +1,26 @@
-import React from 'react';
-import { useAuth } from '../context/AuthContext';
-import { Navigate } from 'react-router-dom';
-import DashboardAluno from './DashboardAluno';
-import DashboardProfessor from './DashboardProfessor';
-import DashboardFuncionario from './DashboardFuncionario';
-import DashboardGerente from './DashboardGerente';
+import React from "react";
+import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { user } = useAuth();
 
-  // Se não houver usuário logado, redireciona para a página de login
   if (!user) {
     return <Navigate to="/login" />;
   }
 
-  // Renderiza o dashboard correto com base no perfil do usuário
+  // Redireciona para o dashboard específico baseado no role
   switch (user.role) {
-    case 'student':
-      return <DashboardAluno />;
-    case 'teacher':
-      return <DashboardProfessor />;
-    case 'employee':
-      return <DashboardFuncionario />;
-    case 'manager':
-      return <DashboardGerente />;
+    case "ALUNO":
+      return <Navigate to="/dashboard/aluno" replace />;
+    case "PROFESSOR":
+      return <Navigate to="/dashboard/professor" replace />;
+    case "ATENDENTE":
+      return <Navigate to="/dashboard/funcionario" replace />;
+    case "GERENTE":
+      return <Navigate to="/dashboard/gerente" replace />;
     default:
-      // Caso haja um perfil desconhecido, volta para o login
-      return <Navigate to="/login" />;
+      return <Navigate to="/login" replace />;
   }
 };
 

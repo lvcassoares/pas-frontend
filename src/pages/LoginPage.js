@@ -1,65 +1,110 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import '../App.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import "../App.css";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('student'); // Para simulação
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("aluno"); // 'aluno', 'professor' ou 'funcionario'
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // --- SIMULAÇÃO DE LOGIN ---
-    // No mundo real, você faria uma chamada para a API aqui
-    // A API retornaria os dados do usuário, incluindo seu perfil (role)
-    
-    let userName = '';
-    switch(role) {
-        case 'student': userName = 'João Aluno'; break;
-        case 'teacher': userName = 'Maria Professora'; break;
-        case 'employee': userName = 'Carlos Funcionário'; break;
-        case 'manager': userName = 'Ana Gerente'; break;
-        default: userName = 'Usuário';
-    }
+    setLoading(true);
+    setError("");
 
-    const userData = {
-      name: userName,
-      email: email,
-      role: role,
-    };
-    
-    login(userData); // Atualiza o contexto de autenticação
-    navigate('/dashboard'); // Redireciona para o dashboard
+    try {
+      // Define o endpoint baseado no tipo de usuário selecionado
+      const endpoint = `http://localhost:8080/${userType}/login`;
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          senha: password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Credenciais inválidas ou usuário não encontrado");
+      }
+
+      const data = await response.json();
+      const token = data.token;
+
+      // Decodifica o token para pegar as informações
+      const payload = JSON.parse(atob(token.split(".")[1]));
+
+      const userData = {
+        token,
+        id: payload.id,
+        email: payload.sub,
+        role: payload.role.toUpperCase(), // Padroniza para maiúsculas
+      };
+
+      login(userData);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message || "Erro ao fazer login. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="container">
       <h2>Login</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label>Senha:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        
-        {/* Este seletor é apenas para fins de simulação */}
-        <div className="form-group">
-            <label>Logar como:</label>
-            <select value={role} onChange={(e) => setRole(e.target.value)}>
-                <option value="student">Aluno</option>
-                <option value="teacher">Professor</option>
-                <option value="employee">Funcionário</option>
-                <option value="manager">Gerente</option>
-            </select>
+          <label>Tipo de Usuário:</label>
+          <select
+            value={userType}
+            onChange={(e) => setUserType(e.target.value)}
+            className="form-control"
+          >
+            <option value="aluno">Aluno</option>
+            <option value="professor">Professor</option>
+            <option value="funcionario">Funcionário</option>
+          </select>
         </div>
 
-        <button type="submit" className="btn btn-primary">Entrar</button>
+        <div className="form-group">
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="form-control"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Senha:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="form-control"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="btn btn-primary btn-block"
+          disabled={loading}
+        >
+          {loading ? "Carregando..." : "Entrar"}
+        </button>
       </form>
     </div>
   );

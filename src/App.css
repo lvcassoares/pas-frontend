@@ -1,5 +1,6 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   background-color: #f4f7f9;
   color: #333;
   margin: 0;
@@ -11,7 +12,7 @@ body {
   padding: 2rem;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 /* Botões */
@@ -50,7 +51,8 @@ body {
   font-weight: bold;
 }
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -86,7 +88,8 @@ table {
   margin-top: 1rem;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
@@ -98,22 +101,194 @@ th {
 
 /* Cards */
 .card {
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .card h3 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .home-buttons {
-    text-align: center;
-    margin-top: 40px;
+  text-align: center;
+  margin-top: 40px;
 }
 
-h1, h2, h3 {
-    color: #343a40;
+h1,
+h2,
+h3 {
+  color: #343a40;
+}
+
+/* Dashboard Aluno */
+.dashboard-aluno {
+  padding: 2rem;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.dashboard-header h2 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+.grades-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.grade-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.grade-card:hover {
+  transform: translateY(-5px);
+}
+
+.grade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.grade-header h3 {
+  margin: 0;
+  color: #3498db;
+  font-size: 1.2rem;
+}
+
+.turma-id {
+  background: #f1f1f1;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.grade-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.grade-value,
+.grade-status {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 0.3rem;
+}
+
+.value {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.value.not-available {
+  color: #bdc3c7;
+}
+
+.status {
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-approved {
+  background-color: #d5f5e3;
+  color: #27ae60;
+}
+
+.status-recovery {
+  background-color: #fef9e7;
+  color: #f39c12;
+}
+
+.status-failed {
+  background-color: #fadbd8;
+  color: #e74c3c;
+}
+
+.status-in-progress {
+  background-color: #eaf2f8;
+  color: #2980b9;
+}
+
+.progress-container {
+  margin-top: 1rem;
+  background: #ecf0f1;
+  height: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.progress-bar {
+  background: #3498db;
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+.no-grades {
+  text-align: center;
+  padding: 3rem;
+  color: #7f8c8d;
+}
+
+.no-grades i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #bdc3c7;
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
